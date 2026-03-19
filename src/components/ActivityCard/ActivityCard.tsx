@@ -1,13 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLuckPick } from "../../context/LuckPickContext";
 
 const SWIPE_THRESHOLD_PX = 50;
 
 const ActivityCard: React.FC = () => {
-  const { selectedActivity, nextActivity, addHistoryItem } = useLuckPick();
+  const { selectedActivity, nextActivity } = useLuckPick();
   const [isSwiping, setIsSwiping] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const [isChoicePulse, setIsChoicePulse] = useState(false);
+
+  useEffect(() => {
+    if (!selectedActivity) return;
+    setIsChoicePulse(true);
+    const t = window.setTimeout(() => setIsChoicePulse(false), 700);
+    return () => window.clearTimeout(t);
+  }, [selectedActivity?.id]);
 
   if (!selectedActivity) {
     return null;
@@ -42,22 +50,23 @@ const ActivityCard: React.FC = () => {
 
   return (
     <div
-      className="activity-card"
+      className={`activity-card${isChoicePulse ? " activity-card--choicePulse" : ""}`}
       style={style}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <h2 className="activity-card__title">{selectedActivity.name}</h2>
-      <div className="activity-card__actions">
-        <button className="activity-card__button activity-card__button--secondary" onClick={nextActivity}>
-          Next Activity
-        </button>
+      <div className="activity-card__titleRow">
+        <h2 className="activity-card__title">{selectedActivity.name}</h2>
         <button
-          className="activity-card__button activity-card__button--primary"
-          onClick={() => addHistoryItem(selectedActivity.id)}
+          type="button"
+          className="activity-card__button activity-card__button--next"
+          onClick={nextActivity}
+          aria-label="Next Activity"
         >
-          Done / Save
+          <span className="activity-card__arrow" aria-hidden="true">
+            &gt;
+          </span>
         </button>
       </div>
       <p className="activity-card__hint">Swipe left or right to shuffle activities</p>

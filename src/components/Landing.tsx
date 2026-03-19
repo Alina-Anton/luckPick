@@ -6,25 +6,37 @@ interface LandingProps {
   onWheelOptions: () => void;
 }
 
-const Landing: React.FC<LandingProps> = ({ onStart, onCustomize, onWheelOptions }) => {
+const Landing: React.FC<LandingProps> = ({
+  onStart,
+  onCustomize,
+  onWheelOptions,
+}) => {
   return (
     <main className="lp-landing">
       <div className="lp-landing__content">
-        <h1 className="lp-landing__title">Ready to Spin?</h1>
         <p className="lp-landing__subtitle">
-          LuckPick
+          <span className="lp-landing__brand">LuckPick</span>
           <br />
-          Spin the wheel. Let randomness decide your next move.
+          Spin the wheel. Let randomness decide what&apos;s next.
         </p>
-        <button className="lp-landing__button lp-landing__button--primary" onClick={onStart}>
+        <button
+          className="lp-landing__button lp-landing__button--primary"
+          onClick={onStart}
+        >
           Start spinning
         </button>
 
-        <button className="lp-landing__button lp-landing__button--secondary" onClick={onWheelOptions}>
+        <button
+          className="lp-landing__button lp-landing__button--secondary"
+          onClick={onWheelOptions}
+        >
           Wheel Options
         </button>
 
-        <button className="lp-landing__button lp-landing__button--secondary" onClick={onCustomize}>
+        <button
+          className="lp-landing__button lp-landing__button--secondary"
+          onClick={onCustomize}
+        >
           Customize your wheel
         </button>
       </div>

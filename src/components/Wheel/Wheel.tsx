@@ -9,25 +9,34 @@ const FULL_TURNS = 6;
 const SEGMENT_START_DEG = -90; // slice 0 starts at 12 o'clock
 const POINTER_ANGLE_DEG = -90; // pointer on the left side
 
-// Purple -> light blue only
-const SOFT_PALETTE = [
-  "#B794F4",
-  "#9B5CF6",
-  "#A78BFA",
-  "#7DD3FC",
-  "#60A5FA",
-  "#93C5FD",
-];
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
+}
+
+// Juicy palette: pink, purple, blue, orange
+const SOFT_PALETTE = ["#FF1C77", "#C77DFF", "#4CC9F0", "#FF9F1C"];
+
+// Keep label font size consistent regardless of how many options exist.
+// We size labels against a fixed reference slice count so the wheel doesn't
+// "breathe" when wheels.length changes.
+const TEXT_REFERENCE_SLICE_COUNT = 14;
 
 function buildConicGradient(count: number) {
   const slice = 360 / Math.max(1, count);
   const parts: string[] = [];
+
+  // Smooth per-slice gradient: palette[i] -> palette[i+1].
+  // Adjacent slices share the same boundary color to avoid seams.
   for (let i = 0; i < count; i++) {
-    const c = SOFT_PALETTE[i % SOFT_PALETTE.length];
+    const c1 = SOFT_PALETTE[i % SOFT_PALETTE.length];
+    const c2 = SOFT_PALETTE[(i + 1) % SOFT_PALETTE.length];
     const start = i * slice;
     const end = (i + 1) * slice;
-    parts.push(`${c} ${start}deg ${end}deg`);
+
+    // conic-gradient interpolates between these stops across the arc.
+    parts.push(`${c1} ${start}deg, ${c2} ${end}deg`);
   }
+
   return `conic-gradient(from ${SEGMENT_START_DEG}deg, ${parts.join(", ")})`;
 }
 
@@ -45,6 +54,18 @@ const Wheel: React.FC = () => {
   const wheelDisplayRef = useRef<HTMLDivElement | null>(null);
   const [wheelSizePx, setWheelSizePx] = useState(340);
   const rotationRef = useRef(0);
+  const [showSparkles, setShowSparkles] = useState(false);
+  const [sparkles, setSparkles] = useState<
+    Array<{
+      id: string;
+      leftPct: number;
+      topPct: number;
+      sizePx: number;
+      rotateDeg: number;
+      delayMs: number;
+      durationMs: number;
+    }>
+  >([]);
 
   useEffect(() => {
     const el = wheelDisplayRef.current;
@@ -72,10 +93,10 @@ const Wheel: React.FC = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return { fontSizePx: 16, maxArcWidthPx: 180 };
 
-    const n = Math.max(1, wheels.length);
-    const sliceAngleRad = (Math.PI * 2) / n;
+    const sliceAngleRad = (Math.PI * 2) / TEXT_REFERENCE_SLICE_COUNT;
     const labelRadiusPx = wheelSizePx * 0.34;
-    const maxArcWidthPx = labelRadiusPx * sliceAngleRad * 0.82;
+    // Allow slightly wider labels so we can render bigger text.
+    const maxArcWidthPx = labelRadiusPx * sliceAngleRad * 0.88;
 
     const measureTextWidth = (text: string, fontSize: number) => {
       ctx.font = `700 ${fontSize}px system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif`;
@@ -83,8 +104,8 @@ const Wheel: React.FC = () => {
     };
 
     const computeFontSizeToFit = (text: string, maxWidth: number) => {
-      const upper = 26;
-      const lower = 10;
+      const upper = 30;
+      const lower = 12;
       let lo = lower;
       let hi = upper;
       for (let i = 0; i < 12; i++) {
@@ -133,7 +154,44 @@ const Wheel: React.FC = () => {
     // Add forward spins so it feels like a real wheel.
     const finalDelta = deltaToDesired + 360 * FULL_TURNS + jitter;
     setRotation((prev) => prev + finalDelta);
-    window.setTimeout(() => setIsSpinning(false), SPIN_DURATION_MS);
+
+    window.setTimeout(() => {
+      setIsSpinning(false);
+
+      // Sparkles when the wheel stops.
+      const count = Math.min(40, Math.max(18, Math.round(wheels.length * 2.2)));
+      const maxRadiusPct = 46; // fill more of the wheel area
+      const next = Array.from({ length: count }).map((_, i) => {
+        let dx = 0;
+        let dy = 0;
+        // Pick a random point inside a circle using rejection sampling.
+        do {
+          dx = (Math.random() * 2 - 1) * maxRadiusPct;
+          dy = (Math.random() * 2 - 1) * maxRadiusPct;
+        } while (dx * dx + dy * dy > maxRadiusPct * maxRadiusPct);
+
+        const sizePx = Math.max(
+          6,
+          Math.round(
+            clamp(wheelSizePx * 0.035, 6, 14) * (0.75 + Math.random() * 0.6),
+          ),
+        );
+
+        return {
+          id: `${Date.now()}-${i}`,
+          leftPct: 50 + dx,
+          topPct: 50 + dy,
+          sizePx,
+          rotateDeg: Math.round(Math.random() * 360),
+          delayMs: Math.round(Math.random() * 220),
+          durationMs: 900 + Math.round(Math.random() * 350),
+        };
+      });
+
+      setSparkles(next);
+      setShowSparkles(true);
+      window.setTimeout(() => setShowSparkles(false), 1400);
+    }, SPIN_DURATION_MS);
   };
 
   return (
@@ -174,6 +232,28 @@ const Wheel: React.FC = () => {
             );
           })}
         </div>
+        {showSparkles && (
+          <div className="wheel-sparkles" aria-hidden="true">
+            {sparkles.map((s) => (
+              <div
+                key={s.id}
+                className="wheel-sparkle"
+                style={
+                  {
+                    left: `${s.leftPct}%`,
+                    top: `${s.topPct}%`,
+                    width: `${s.sizePx}px`,
+                    height: `${s.sizePx}px`,
+                    // CSS vars for the animation.
+                    "--spark-rot": `${s.rotateDeg}deg`,
+                    "--spark-delay": `${s.delayMs}ms`,
+                    "--spark-dur": `${s.durationMs}ms`,
+                  } as React.CSSProperties & Record<string, string>
+                }
+              />
+            ))}
+          </div>
+        )}
         <div className="wheel-pointer" aria-hidden="true" />
         <div
           className="wheel-center"
@@ -189,7 +269,7 @@ const Wheel: React.FC = () => {
           }}
         >
           <div className="wheel-center__text">
-            {isSpinning ? "Spinning..." : "Spin"}
+            {isSpinning ? "Ready?" : "Spin"}
           </div>
         </div>
       </div>

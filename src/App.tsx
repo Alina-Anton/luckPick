@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { LuckPickProvider } from "./context/LuckPickContext";
 import Wheel from "./components/Wheel/Wheel";
 import ActivityCard from "./components/ActivityCard/ActivityCard";
-import HistoryList from "./components/History/HistoryList";
 import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import Landing from "./components/Landing";
 import CustomizeWheelMenu from "./components/CustomizeWheelMenu/CustomizeWheelMenu";
 import WheelOptionsScreen from "./components/WheelOptionsScreen/WheelOptionsScreen";
@@ -31,11 +29,7 @@ function App() {
               <Wheel />
               <ActivityCard />
             </section>
-            <section className="lp-column lp-column--secondary">
-              <HistoryList />
-            </section>
           </main>
-          <Footer onCustomize={() => setMode("customize")} />
         </>
       ) : (
         <Landing

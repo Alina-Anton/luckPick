@@ -157,11 +157,17 @@ export const LuckPickProvider: React.FC<{ children: ReactNode }> = ({
 
   const nextActivity = () => {
     if (!selectedOption) return;
-    const next =
-      selectedOption.activities[
-        Math.floor(Math.random() * selectedOption.activities.length)
-      ];
-    setSelectedActivity(next);
+    if (!selectedOption.activities.length) return;
+
+    // Cycle through activities in a stable order.
+    // After the last activity, wrap back to the first.
+    const currentIdx = selectedActivity
+      ? selectedOption.activities.findIndex((a) => a.id === selectedActivity.id)
+      : -1;
+
+    const safeIdx = currentIdx >= 0 ? currentIdx : 0;
+    const nextIdx = (safeIdx + 1) % selectedOption.activities.length;
+    setSelectedActivity(selectedOption.activities[nextIdx]);
   };
 
   const addHistoryItem = (activityId: string) => {
