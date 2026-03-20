@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useLuckPick } from "../../context/LuckPickContext";
+import { useLuckPick } from "../../context/useLuckPick";
 
 export type WheelSegmentData = { id: string; label: string; color?: string };
 

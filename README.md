@@ -4,6 +4,8 @@ Spin your day. Choose your adventure.
 
 LuckPick is a fun, interactive **React + TypeScript** app that helps you decide what to do next. Spin a colorful wheel, get a concrete activity for the category you land on, and shuffle through more ideas with a tap or a swipe. Tune which categories appear on the wheel and customize sub-options anytime.
 
+Live Demo: https://luckpickapp.web.app/
+
 ---
 
 ## Features
@@ -66,12 +68,12 @@ _All images are stored in [`screenshots/ui-reference/`](screenshots/ui-reference
 
 ### Other scripts
 
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm run build` | Typecheck + production build to `dist/` |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint`  | Run ESLint               |
-| `npm run deploy` | Deploy `dist/` via `gh-pages` (after `predeploy` build) |
+| Command           | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| `npm run build`   | Typecheck + production build to `dist/`                 |
+| `npm run preview` | Preview the production build locally                    |
+| `npm run lint`    | Run ESLint                                              |
+| `npm run deploy`  | Deploy `dist/` via `gh-pages` (after `predeploy` build) |
 
 ---
 
@@ -103,7 +105,10 @@ luckpick/
       CustomWheelEditor/   # present in repo; not wired in main App flow
       History/             # present in repo; not shown in main App flow
     context/
-      LuckPickContext.tsx
+      luckPickCore.ts      # types + React context object
+      useLuckPick.ts       # consumer hook
+      LuckPickProvider.tsx # provider component
+      LuckPickContext.tsx  # optional re-export of provider
     App.tsx
     main.tsx
     styles.css

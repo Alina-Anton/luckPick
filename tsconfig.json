@@ -11,6 +11,7 @@
     "outDir": "./dist",
       "moduleResolution": "node",
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/context/luckPickContext.ts"]
 }
 

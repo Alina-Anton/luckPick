@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LuckPickProvider } from "./context/LuckPickContext";
+import { LuckPickProvider } from "./context/LuckPickProvider";
 import Wheel from "./components/Wheel/Wheel";
 import ActivityCard from "./components/ActivityCard/ActivityCard";
 import { Header } from "./components/Header";
@@ -9,7 +9,9 @@ import WheelOptionsScreen from "./components/WheelOptionsScreen/WheelOptionsScre
 
 function App() {
   const [hasStarted, setHasStarted] = useState(false);
-  const [mode, setMode] = useState<"main" | "customize" | "wheelOptions">("main");
+  const [mode, setMode] = useState<"main" | "customize" | "wheelOptions">(
+    "main",
+  );
 
   return (
     <LuckPickProvider>

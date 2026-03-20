@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { useLuckPick, type WheelOption } from "../../context/LuckPickContext";
+import { useLuckPick } from "../../context/useLuckPick";
+import type { WheelOption } from "../../context/luckPickCore";
 
 type WheelOptionsScreenProps = {
   onDone: () => void;
@@ -25,7 +26,11 @@ const WheelOptionsScreen: React.FC<WheelOptionsScreenProps> = ({ onDone }) => {
   const handleAdd = () => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    const newOption: WheelOption = { id: Date.now().toString(), name: trimmed, activities: [] };
+    const newOption: WheelOption = {
+      id: Date.now().toString(),
+      name: trimmed,
+      activities: [],
+    };
     addWheelOption(newOption);
     setName("");
   };
@@ -51,7 +56,11 @@ const WheelOptionsScreen: React.FC<WheelOptionsScreenProps> = ({ onDone }) => {
                 if (e.key === "Enter") handleAdd();
               }}
             />
-            <button type="button" className="lp-options-addButton" onClick={handleAdd}>
+            <button
+              type="button"
+              className="lp-options-addButton"
+              onClick={handleAdd}
+            >
               Add
             </button>
           </div>
@@ -74,9 +83,7 @@ const WheelOptionsScreen: React.FC<WheelOptionsScreenProps> = ({ onDone }) => {
                         else removeWheelOption(opt.id);
                       }}
                     />
-                    <span className="lp-options-rowLabel">
-                      {opt.name}
-                    </span>
+                    <span className="lp-options-rowLabel">{opt.name}</span>
                   </label>
                 );
               })
@@ -89,4 +96,3 @@ const WheelOptionsScreen: React.FC<WheelOptionsScreenProps> = ({ onDone }) => {
 };
 
 export default WheelOptionsScreen;
-

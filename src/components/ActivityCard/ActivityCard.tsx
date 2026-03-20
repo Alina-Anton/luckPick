@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useLuckPick } from "../../context/LuckPickContext";
+import React, { useRef, useState } from "react";
+import { useLuckPick } from "../../context/useLuckPick";
 
 const SWIPE_THRESHOLD_PX = 50;
 
@@ -8,14 +8,6 @@ const ActivityCard: React.FC = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const [isChoicePulse, setIsChoicePulse] = useState(false);
-
-  useEffect(() => {
-    if (!selectedActivity) return;
-    setIsChoicePulse(true);
-    const t = window.setTimeout(() => setIsChoicePulse(false), 700);
-    return () => window.clearTimeout(t);
-  }, [selectedActivity?.id]);
 
   if (!selectedActivity) {
     return null;
@@ -49,7 +41,8 @@ const ActivityCard: React.FC = () => {
 
   return (
     <div
-      className={`activity-card${isChoicePulse ? " activity-card--choicePulse" : ""}`}
+      key={selectedActivity.id}
+      className="activity-card activity-card--choicePulseIn"
       style={style}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -68,10 +61,11 @@ const ActivityCard: React.FC = () => {
           </span>
         </button>
       </div>
-      <p className="activity-card__hint">Swipe left or right to shuffle activities</p>
+      <p className="activity-card__hint">
+        Swipe left or right to shuffle activities
+      </p>
     </div>
   );
 };
 
 export default ActivityCard;
-

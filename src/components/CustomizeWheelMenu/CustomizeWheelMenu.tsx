@@ -1,18 +1,18 @@
 import React, { useMemo, useState } from "react";
-import { useLuckPick } from "../../context/LuckPickContext";
+import { useLuckPick } from "../../context/useLuckPick";
 
 type CustomizeWheelMenuProps = {
   onDone: () => void;
 };
 
 const SECTION_COLORS = [
-  "linear-gradient(135deg, rgba(255, 0, 110, 0.88) 0%, rgba(237, 4, 20, 0.7) 60%",
-  "linear-gradient(135deg, rgba(223, 16, 164, 0.94) 0%, rgba(255, 0, 128, 0.9) 55%",
-  "linear-gradient(135deg, rgba(251, 138, 0, 0.92) 0%, rgba(252, 74, 15, 0.66) 55%",
+  "linear-gradient(135deg, rgba(255, 0, 110, 0.88) 0%, rgba(237, 4, 20, 0.7) 60%)",
+  "linear-gradient(135deg, rgba(223, 16, 164, 0.94) 0%, rgba(255, 0, 128, 0.9) 55%)",
+  "linear-gradient(135deg, rgba(251, 138, 0, 0.92) 0%, rgba(252, 74, 15, 0.66) 55%)",
   "linear-gradient(135deg, rgba(46, 196, 182, 0.92) 0%, rgba(76, 201, 240, 0.82) 100%)",
   "linear-gradient(135deg, rgba(131, 56, 236, 0.82) 0%, rgba(200, 6, 151, 0.78) 60%)",
-  "linear-gradient(135deg, rgba(58, 134, 255, 0.92) 0%, rgba(15, 203, 245, 0.78) 70%",
-  "linear-gradient(135deg, rgba(131, 56, 236, 0.78) 0%, rgba(193, 24, 244, 0.86) 55%",
+  "linear-gradient(135deg, rgba(58, 134, 255, 0.92) 0%, rgba(15, 203, 245, 0.78) 70%)",
+  "linear-gradient(135deg, rgba(131, 56, 236, 0.78) 0%, rgba(193, 24, 244, 0.86) 55%)",
 ];
 
 type IconId =
@@ -31,13 +31,18 @@ const iconIdForOptionName = (name: string): IconId => {
   const n = name.toLowerCase();
   if (n.includes("indoor")) return "house";
   if (n.includes("chill") || n.includes("drink")) return "coffee";
-  if (n.includes("autdoor") || n.includes("outdoor")) return "leaf";
+  if (n.includes("outdoor")) return "leaf";
   if (n.includes("social")) return "phone";
-  if (n.includes("spiritual")) return "spark";
-  if (n.includes("artistic") || n.includes("art")) return "palette";
-  if (n.includes("self-care")) return "yoga";
-  if (n.includes("learning")) return "book";
-  if (n.includes("planning")) return "calendar";
+  // "spirit" + legacy "spiritual"
+  if (n.includes("spirit")) return "spark";
+  // "creative" + legacy "artistic"; avoid matching unrelated words via bare "art"
+  if (n.includes("artistic") || n.includes("creative")) return "palette";
+  // "care" (short label) + legacy "self-care"
+  if (n.includes("self-care") || n === "care") return "yoga";
+  // "learn" + legacy "learning"
+  if (n.includes("learning") || n === "learn") return "book";
+  // "plan" + legacy "planning"
+  if (n.includes("planning") || n === "plan") return "calendar";
   return "default";
 };
 
@@ -184,22 +189,22 @@ const CustomizeWheelMenu: React.FC<CustomizeWheelMenuProps> = ({ onDone }) => {
   return (
     <div className="lp-customize-overlay">
       <div className="lp-customize-phone">
-        <div className="lp-customize-subHeader">
-          <div className="lp-customize-subHeaderLeft">{totalItems} Items</div>
-          <div
-            className="lp-customize-done"
-            role="button"
-            tabIndex={0}
-            onClick={onDone}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") onDone();
-            }}
-          >
-            DONE
-          </div>
-        </div>
-
         <div className="lp-customize-scroll">
+          <div className="lp-customize-subHeader">
+            <div className="lp-customize-subHeaderLeft">{totalItems} Items</div>
+            <div
+              className="lp-customize-done"
+              role="button"
+              tabIndex={0}
+              onClick={onDone}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onDone();
+              }}
+            >
+              DONE
+            </div>
+          </div>
+
           <div className="lp-customize-cardsGrid">
             {wheels.map((w, idx) => {
               const sectionBg = SECTION_COLORS[idx % SECTION_COLORS.length];
