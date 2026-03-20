@@ -189,22 +189,22 @@ const CustomizeWheelMenu: React.FC<CustomizeWheelMenuProps> = ({ onDone }) => {
   return (
     <div className="lp-customize-overlay">
       <div className="lp-customize-phone">
-        <div className="lp-customize-scroll">
-          <div className="lp-customize-subHeader">
-            <div className="lp-customize-subHeaderLeft">{totalItems} Items</div>
-            <div
-              className="lp-customize-done"
-              role="button"
-              tabIndex={0}
-              onClick={onDone}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") onDone();
-              }}
-            >
-              DONE
-            </div>
+        <div className="lp-customize-subHeader">
+          <div className="lp-customize-subHeaderLeft">{totalItems} Items</div>
+          <div
+            className="lp-customize-done"
+            role="button"
+            tabIndex={0}
+            onClick={onDone}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") onDone();
+            }}
+          >
+            DONE
           </div>
+        </div>
 
+        <div className="lp-customize-scroll">
           <div className="lp-customize-cardsGrid">
             {wheels.map((w, idx) => {
               const sectionBg = SECTION_COLORS[idx % SECTION_COLORS.length];

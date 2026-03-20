@@ -10,6 +10,28 @@ body,
   margin: 0;
   padding: 0;
   height: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* iOS Safari: real viewport height when UI chrome shows/hides (modals use full visible area) */
+@supports (-webkit-touch-callout: none) {
+  html {
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+main {
+  margin: 0;
 }
 
 :root {
@@ -362,11 +384,16 @@ body {
 }
 
 .lp-main {
-  min-height: calc(100vh - 120px);
-  padding: 1rem 1.25rem 1.5rem;
+  /* Fill viewport; empty Header — no extra top band */
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top, 0px) 1.25rem max(1rem, env(safe-area-inset-bottom, 0px));
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1.25rem;
+  align-content: start;
 }
 
 .lp-column {
@@ -381,11 +408,6 @@ body {
     padding-inline: 0.75rem;
   }
 
-  .wheel-wrapper {
-    width: 210px;
-    height: 210px;
-  }
-
   .activity-card {
     margin-inline: 0;
   }
@@ -393,7 +415,7 @@ body {
 
 @media (max-width: 480px) {
   .lp-main {
-    padding: 0.75rem 0.5rem 1rem;
+    padding: env(safe-area-inset-top, 0px) 0.5rem max(0.75rem, env(safe-area-inset-bottom, 0px));
     gap: 0.75rem;
   }
 
@@ -415,7 +437,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin: 4em 0 1rem;
+  /* Was 4em top — left a large grey band under the status bar */
+  margin: 0 0 1rem;
 }
 
 .wheel-spin-button {
@@ -439,7 +462,8 @@ body {
 }
 
 .wheel-wrapper {
-  --wheel-size: clamp(240px, 44vw, 380px);
+  /* Prefer ~72vw on phones, cap by viewport padding; min 268px when there’s room */
+  --wheel-size: clamp(268px, 72vw, min(400px, calc(100vw - 2rem)));
   --wheel-ring-1: 30%;
   --wheel-ring-2: 42%;
   --wheel-hub: 32%;
@@ -877,8 +901,8 @@ body {
   background: rgba(2, 6, 23, 0.28);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: max(env(safe-area-inset-top), 12px);
+  align-items: stretch;
+  padding-top: 0;
   z-index: 50;
   backdrop-filter: none;
 }
@@ -895,7 +919,13 @@ body {
   /* Match .lp-customize-cardsGrid horizontal padding so subheader aligns with cards */
   --lp-customize-cards-inline-pad: 14px;
   width: 100vw;
-  height: calc(100dvh - max(env(safe-area-inset-top), 12px));
+  /* vh + dvh: older mobile browsers + dynamic toolbar; max-height keeps header + scroll split */
+  min-height: 100vh;
+  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
   border-radius: 0;
   overflow: hidden;
   box-sizing: border-box;
@@ -952,24 +982,24 @@ body {
 }
 
 .lp-customize-subHeader {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+  position: relative;
+  z-index: 3;
   flex-shrink: 0;
   background: linear-gradient(
     180deg,
     rgba(125, 211, 252, 0.9) 0%,
     rgba(43, 189, 180, 0.95) 100%
   );
-  height: 54px;
-  padding: 0 var(--lp-customize-cards-inline-pad);
+  box-sizing: border-box;
+  min-height: calc(54px + env(safe-area-inset-top, 0px));
+  height: auto;
+  padding: env(safe-area-inset-top, 0px) var(--lp-customize-cards-inline-pad) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: rgba(255, 255, 255, 0.92);
   font-weight: 700;
-  /* Same scrollport as cards — keeps DONE right edge aligned when a scrollbar is present */
-  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.08);
+  touch-action: manipulation;
 }
 
 @keyframes lp-done-pulse {
@@ -1000,11 +1030,14 @@ body {
     rgba(248, 249, 255, 0.62),
     rgba(255, 255, 255, 0.9)
   );
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
   overflow-x: hidden;
   padding-bottom: 18px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .lp-customize-cardsGrid {
@@ -1392,15 +1425,21 @@ body {
   background: rgba(2, 6, 23, 0.28);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: max(env(safe-area-inset-top), 12px);
+  align-items: stretch;
+  padding-top: 0;
   z-index: 60;
   backdrop-filter: none;
 }
 
 .lp-options-screen {
   width: 100vw;
-  height: calc(100dvh - max(env(safe-area-inset-top), 12px));
+  min-height: 100vh;
+  height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.96),
@@ -1412,14 +1451,20 @@ body {
 }
 
 .lp-options-header {
-  height: 58px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 3;
+  min-height: calc(58px + env(safe-area-inset-top, 0px));
+  height: auto;
   background: linear-gradient(135deg, #ff1c77 0%, #c77dff 45%, #4cc9f0 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 26px;
+  padding: env(safe-area-inset-top, 0px) 26px 0;
   color: rgba(255, 255, 255, 0.95);
   font-weight: 900;
+  touch-action: manipulation;
 }
 
 .lp-options-title {
@@ -1441,8 +1486,12 @@ body {
 }
 
 .lp-options-body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   padding: 16px;
   background: linear-gradient(
     180deg,
