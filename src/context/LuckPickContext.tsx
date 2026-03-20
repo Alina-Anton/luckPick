@@ -74,7 +74,7 @@ export const LuckPickProvider: React.FC<{ children: ReactNode }> = ({
       },
       {
         id: "2",
-        name: "Autdoor",
+        name: "Outdoor",
         activities: [
           { id: "a3", name: "Short outdoor walk" },
           { id: "a4", name: "Fresh air break" },
@@ -159,8 +159,6 @@ export const LuckPickProvider: React.FC<{ children: ReactNode }> = ({
     if (!selectedOption) return;
     if (!selectedOption.activities.length) return;
 
-    // Cycle through activities in a stable order.
-    // After the last activity, wrap back to the first.
     const currentIdx = selectedActivity
       ? selectedOption.activities.findIndex((a) => a.id === selectedActivity.id)
       : -1;

@@ -35,7 +35,6 @@ const ActivityCard: React.FC = () => {
 
   const handleTouchEnd: React.TouchEventHandler<HTMLDivElement> = () => {
     if (Math.abs(offsetX) > SWIPE_THRESHOLD_PX) {
-      // Swipe left or right -> show next activity
       nextActivity();
     }
     setIsSwiping(false);

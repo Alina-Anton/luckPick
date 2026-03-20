@@ -30,8 +30,8 @@ type IconId =
 const iconIdForOptionName = (name: string): IconId => {
   const n = name.toLowerCase();
   if (n.includes("indoor")) return "house";
-  if (n.includes("chill") || n.includes("drink")) return "coffee"; // coffee icon renders as cup + steam
-  if (n.includes("autdoor") || n.includes("outdoor")) return "leaf"; // leaf icon renders as sun
+  if (n.includes("chill") || n.includes("drink")) return "coffee";
+  if (n.includes("autdoor") || n.includes("outdoor")) return "leaf";
   if (n.includes("social")) return "phone";
   if (n.includes("spiritual")) return "spark";
   if (n.includes("artistic") || n.includes("art")) return "palette";
@@ -57,37 +57,27 @@ const OutlineIcon: React.FC<{ id: IconId; className?: string }> = ({
     case "coffee":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Cup */}
           <path {...common} d="M18 26h28v16c0 9-7 16-14 16s-14-7-14-16V26z" />
-          {/* Handle */}
           <path {...common} d="M46 32h8c5 0 8 4 8 7s-3 7-8 7h-8" />
-          {/* Rim line */}
           <path {...common} d="M22 30h20" />
-          {/* Steam */}
           <path {...common} d="M26 16c-3 4-3 7 0 11" />
           <path {...common} d="M34 16c-3 4-3 7 0 11" />
           <path {...common} d="M42 16c-3 4-3 7 0 11" />
-          {/* Saucer */}
           <path {...common} d="M18 54h28" />
         </svg>
       );
     case "house":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Roof */}
           <path {...common} d="M14 28L32 14l18 14" />
-          {/* Walls */}
           <path {...common} d="M18 26v26h28V26" />
-          {/* Door */}
           <path {...common} d="M28 52V38h8v14" />
         </svg>
       );
     case "leaf":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Sun core */}
           <path {...common} d="M32 20a12 12 0 1 0 0.01 0z" />
-          {/* Rays */}
           <path {...common} d="M32 10v6" />
           <path {...common} d="M32 48v6" />
           <path {...common} d="M10 32h6" />
@@ -101,13 +91,10 @@ const OutlineIcon: React.FC<{ id: IconId; className?: string }> = ({
     case "phone":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Three people group */}
-          {/* Heads */}
           <path {...common} d="M18 20a6 6 0 1 0 0.01 0z" />
           <path {...common} d="M32 20a6 6 0 1 0 0.01 0z" />
           <path {...common} d="M46 20a6 6 0 1 0 0.01 0z" />
 
-          {/* Bodies (simple silhouette outlines) */}
           <path {...common} d="M10 34h14v22h-6V44H16v12h-6V34z" />
           <path {...common} d="M25 34h14v22h-6V44h-2v12h-6V34z" />
           <path {...common} d="M40 34h14v22h-6V44h-2v12h-6V34z" />
@@ -126,21 +113,17 @@ const OutlineIcon: React.FC<{ id: IconId; className?: string }> = ({
     case "palette":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Picture frame */}
           <path {...common} d="M18 18h28v34H18V18z" />
           <path {...common} d="M22 22h20v26H22V22z" />
 
-          {/* Sun */}
           <path {...common} d="M46 32a4 4 0 1 0 0.01 0z" />
 
-          {/* Mountains */}
           <path {...common} d="M24 48l8-14 6 10 4-6 4 10H24z" />
         </svg>
       );
     case "yoga":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Heart (self-care) */}
           <path
             {...common}
             d="M32 50l-14-14c-3-3-3-8 0-11s8-3 11 0l3 3 3-3c3-3 8-3 11 0s3 8 0 11L32 50z"
@@ -150,14 +133,10 @@ const OutlineIcon: React.FC<{ id: IconId; className?: string }> = ({
     case "book":
       return (
         <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
-          {/* Left page */}
           <path {...common} d="M18 22c4-3 10-3 14 0v30c-4-3-10-3-14 0V22z" />
-          {/* Right page */}
           <path {...common} d="M46 22c-4-3-10-3-14 0v30c4-3 10-3 14 0V22z" />
-          {/* Spine */}
           <path {...common} d="M32 22v30" />
 
-          {/* Page lines */}
           <path {...common} d="M24 30h10" />
           <path {...common} d="M24 36h10" />
         </svg>
@@ -242,7 +221,6 @@ const CustomizeWheelMenu: React.FC<CustomizeWheelMenuProps> = ({ onDone }) => {
                       isFlipped ? "lp-customize-cardInner--flipped" : ""
                     }`}
                   >
-                    {/* Front */}
                     <div
                       className="lp-customize-cardFace lp-customize-cardFace--front"
                       style={{ background: sectionBg }}
@@ -269,7 +247,6 @@ const CustomizeWheelMenu: React.FC<CustomizeWheelMenuProps> = ({ onDone }) => {
                       </div>
                     </div>
 
-                    {/* Back */}
                     <div
                       className="lp-customize-cardFace lp-customize-cardFace--back"
                       style={{ background: sectionBg }}
