@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useLuckPick } from "../../context/useLuckPick";
+import { useLuckPick } from "../../state/luckpick/useLuckPick";
 
 type CustomizeWheelMenuProps = {
   onDone: () => void;

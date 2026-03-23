@@ -1573,13 +1573,12 @@ body {
   border: 1px solid rgba(148, 163, 184, 0.7);
   background: rgba(255, 255, 255, 0.75);
   padding: 0 12px;
-  font-weight: 700;
   outline: none;
 }
 
 .lp-options-input::placeholder {
   font-size: 1rem;
-  font-weight: 50;
+  font-weight: 600;
   color: rgba(100, 116, 139, 0.85);
 }
 

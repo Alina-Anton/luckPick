@@ -86,29 +86,37 @@ _All images are stored in [`screenshots/ui-reference/`](screenshots/ui-reference
 
 ---
 
-## Folder Structure (simplified)
+## Folder Structure
 
 ```text
 luckpick/
   public/
   screenshots/
-    ui-reference/          # README / design reference images
+    ui-reference/
   src/
-    components/
-      Wheel/
-      ActivityCard/
-      CustomizeWheelMenu/
-      WheelOptionsScreen/
+    features/
+      wheel/
+        Wheel.tsx
+        WheelSegment.tsx
+        Wheel.styles.ts
+      activities/
+        ActivityCard.tsx
+        ActivityCard.styles.ts
+      customize/
+        CustomizeWheelMenu.tsx
+        CustomWheelEditor.tsx
+        SegmentEditor.tsx
+    screens/
       Landing.tsx
+      WheelOptionsScreen.tsx
+    layout/
       Header.tsx
       Footer.tsx
-      CustomWheelEditor/   # present in repo; not wired in main App flow
-      History/             # present in repo; not shown in main App flow
-    context/
-      luckPickCore.ts      # types + React context object
-      useLuckPick.ts       # consumer hook
-      LuckPickProvider.tsx # provider component
-      LuckPickContext.tsx  # optional re-export of provider
+    state/
+      luckpick/
+        LuckPickProvider.tsx
+        luckPickCore.ts
+        useLuckPick.ts
     App.tsx
     main.tsx
     styles.css
@@ -124,7 +132,6 @@ luckpick/
 - **Social sharing** of spins and results
 - **Smarter suggestions** (e.g. time of day, weather hooks)
 - **Themed wheels** for holidays or special events
-- Optional **history** UI if you want a visible “recent picks” list again
 
 ---
 

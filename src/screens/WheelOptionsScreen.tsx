@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
-import { useLuckPick } from "../../context/useLuckPick";
-import type { WheelOption } from "../../context/luckPickCore";
+import { useLuckPick } from "../state/luckpick/useLuckPick";
+import type { WheelOption } from "../state/luckpick/luckPickCore";
 
 type WheelOptionsScreenProps = {
   onDone: () => void;

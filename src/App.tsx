@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { LuckPickProvider } from "./context/LuckPickProvider";
-import Wheel from "./components/Wheel/Wheel";
-import ActivityCard from "./components/ActivityCard/ActivityCard";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import Landing from "./components/Landing";
-import CustomizeWheelMenu from "./components/CustomizeWheelMenu/CustomizeWheelMenu";
-import WheelOptionsScreen from "./components/WheelOptionsScreen/WheelOptionsScreen";
+import { LuckPickProvider } from "./state/luckpick/LuckPickProvider";
+import Wheel from "./features/wheel/Wheel";
+import ActivityCard from "./features/activities/ActivityCard";
+import { Header } from "./layout/Header";
+import { Footer } from "./layout/Footer";
+import Landing from "./screens/Landing";
+import CustomizeWheelMenu from "./features/customize/CustomizeWheelMenu";
+import WheelOptionsScreen from "./screens/WheelOptionsScreen";
 
 function App() {
   const [hasStarted, setHasStarted] = useState(false);

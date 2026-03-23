@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useLuckPick } from "../../context/useLuckPick";
+import { useLuckPick } from "../../state/luckpick/useLuckPick";
 
 const SWIPE_THRESHOLD_PX = 50;
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useLuckPick } from "../../context/useLuckPick";
-import type { WheelOption } from "../../context/luckPickCore";
+import { useLuckPick } from "../../state/luckpick/useLuckPick";
+import type { WheelOption } from "../../state/luckpick/luckPickCore";
 
 const CustomWheelEditor: React.FC = () => {
   const {

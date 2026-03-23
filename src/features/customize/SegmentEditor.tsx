@@ -1,5 +1,5 @@
 import React from "react";
-import type { WheelSegmentData } from "../Wheel/Wheel";
+import type { WheelSegmentData } from "../wheel/Wheel";
 
 interface SegmentEditorProps {
   segment: WheelSegmentData;
