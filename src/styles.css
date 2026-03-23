@@ -1520,7 +1520,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: env(safe-area-inset-top, 0px) 26px 0;
+  padding: env(safe-area-inset-top, 0px) 16px 0;
   color: rgba(255, 255, 255, 0.95);
   font-weight: 900;
   touch-action: manipulation;
